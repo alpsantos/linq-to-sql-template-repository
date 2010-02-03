@@ -7,66 +7,68 @@ namespace Codevil.TemplateRepository.Model.Entities
 {
     public class Person : Entity
     {
-        public string Name { get; set; }
-        public string Document { get; set; }
-        public string Email { get; set; }
         public IList<Account> accounts;
-        public IList<Account> Accounts
-        {
-            get
-            {
-                if (this.accounts == null)
-                {
-                    this.accounts = this.AccountsRepository.Find(a => a.OwnerId == this.Id);
-                }
-
-                return this.accounts;
-            }
-        }
-        public IRepository<PERSON, Person> PeopleRepository { get; set; }
-        public IRepository<ACCOUNT, Account> AccountsRepository { get; set; }
 
         public Person()
-            : base()
         {
-            this.AccountsRepository = new AccountsRepository();
-            this.PeopleRepository = new PeopleRepository();
+            AccountsRepository = new AccountsRepository();
+            PeopleRepository = new PeopleRepository();
         }
 
         public Person(PERSON row)
             : this()
         {
-            this.Id = row.Id;
-            this.Name = row.Name;
-            this.Document = row.Document;
-            this.Email = row.Email;
+            Id = row.Id;
+            Name = row.Name;
+            Document = row.Document;
+            Email = row.Email;
         }
+
+        public string Name { get; set; }
+        public string Document { get; set; }
+        public string Email { get; set; }
+
+        public IList<Account> Accounts
+        {
+            get
+            {
+                if (accounts == null)
+                {
+                    accounts = AccountsRepository.Find(a => a.OwnerId == Id);
+                }
+
+                return accounts;
+            }
+        }
+
+        public IRepository<PERSON, Person> PeopleRepository { get; set; }
+        public IRepository<ACCOUNT, Account> AccountsRepository { get; set; }
 
         public void Save()
         {
-            this.PeopleRepository.Save(this);
+            PeopleRepository.Save(this);
 
-            foreach (Account account in this.Accounts)
+            foreach (var account in Accounts)
             {
-                account.OwnerId = this.Id;
+                account.OwnerId = Id;
 
-                this.AccountsRepository.Save(account);
+                AccountsRepository.Save(account);
             }
         }
 
         public override bool Equals(object obj)
         {
-            bool areEqual = false;
+            var areEqual = false;
 
             if (obj is Person)
             {
-                Person that = obj as Person;
+                var that = obj as Person;
 
                 areEqual =
-                    this.Id == that.Id &&
-                    this.Name == that.Name &&
-                    this.Document == that.Document &&
-                    this.Email == that.Email;
+                    Id == that.Id &&
+                    Name == that.Name &&
+                    Document == that.Document &&
+                    Email == that.Email;
             }
 
             return areEqual;

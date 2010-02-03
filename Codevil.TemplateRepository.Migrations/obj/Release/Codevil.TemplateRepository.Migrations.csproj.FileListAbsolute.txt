@@ -4,3 +4,9 @@ C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateReposi
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Migrations\obj\Release\ResolveAssemblyReference.cache
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Migrations\obj\Release\Codevil.TemplateRepository.Migrations.exe
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Migrations\obj\Release\Codevil.TemplateRepository.Migrations.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Migrations\bin\Release\Codevil.TemplateRepository.Migrations.exe
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Migrations\bin\Release\Codevil.TemplateRepository.Migrations.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Migrations\bin\Release\RikMigrations.exe
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Migrations\obj\Release\ResolveAssemblyReference.cache
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Migrations\obj\Release\Codevil.TemplateRepository.Migrations.exe
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Migrations\obj\Release\Codevil.TemplateRepository.Migrations.pdb

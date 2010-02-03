@@ -6,3 +6,11 @@ C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateReposi
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.Data.dll.config
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.dll
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.Data.dll.config
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.Data.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.Data.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\bin\Debug\Codevil.TemplateRepository.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\obj\Debug\ResolveAssemblyReference.cache
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\obj\Debug\Codevil.TemplateRepository.Data.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Data\obj\Debug\Codevil.TemplateRepository.Data.pdb

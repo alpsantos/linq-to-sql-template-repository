@@ -3,3 +3,8 @@ C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateReposi
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository\obj\Release\ResolveAssemblyReference.cache
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository\obj\Release\Codevil.TemplateRepository.dll
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository\obj\Release\Codevil.TemplateRepository.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository\bin\Release\Codevil.TemplateRepository.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository\bin\Release\Codevil.TemplateRepository.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository\obj\Release\ResolveAssemblyReference.cache
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository\obj\Release\Codevil.TemplateRepository.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository\obj\Release\Codevil.TemplateRepository.pdb

@@ -14,7 +14,7 @@ namespace Codevil.TemplateRepository.Repositories
     /// <typeparam name="TEntity">The type of entity</typeparam>
     public interface IRepository<TRow, TEntity>
         where TRow : class
-        where TEntity : DataEntity
+        where TEntity : class
     {
         #region fields
         IDataContextFactory DataContextFactory { get; set; }
@@ -23,7 +23,6 @@ namespace Codevil.TemplateRepository.Repositories
         bool AutoRollbackOnError { get; set; }
         #endregion
 
-        #region find
         /// <summary>
         /// This method finds a list of entries of a given entity on the database
         /// </summary>
@@ -42,7 +41,9 @@ namespace Codevil.TemplateRepository.Repositories
         /// If no entries can be found, it will return null
         /// </returns>
         TEntity FindSingle(Expression<Func<TRow, bool>> exp);
-        #endregion
+
+        IList<TEntity> Find(Expression<Func<TRow, bool>> exp, Transaction transaction);
+        TEntity FindSingle(Expression<Func<TRow, bool>> exp, Transaction transaction);
 
         #region save
         /// <summary>

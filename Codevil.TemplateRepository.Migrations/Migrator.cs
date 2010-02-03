@@ -10,7 +10,7 @@ namespace Codevil.TemplateRepository.Migrations
         {
             if (!migrated)
             {
-                DbProvider.DefaultConnectionString = @"Data Source=MARVIN\SQLEXPRESS;Initial Catalog=bank;Integrated Security=True";
+                DbProvider.DefaultConnectionString = @"Data Source=localhost;Initial Catalog=locaweb_fast_sal_test;Integrated Security=SSPI";
                 MigrationManager.UpgradeMax(typeof(Migrator).Assembly);
                 migrated = true;
             }
@@ -20,7 +20,7 @@ namespace Codevil.TemplateRepository.Migrations
         {
             if (migrated)
             {
-                DbProvider.DefaultConnectionString = @"Data Source=MARVIN\SQLEXPRESS;Initial Catalog=bank;Integrated Security=True";
+                DbProvider.DefaultConnectionString = @"Data Source=localhost;Initial Catalog=locaweb_fast_sal_test;Integrated Security=SSPI";
                 MigrationManager.MigrateTo(typeof(Migrator).Assembly, MigrationData.ModuleName, 0);
                 migrated = false;
             }

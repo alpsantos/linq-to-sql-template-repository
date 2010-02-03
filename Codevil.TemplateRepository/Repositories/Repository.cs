@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Globalization;
 using System.Linq;
-using Codevil.TemplateRepository.Handlers;
+using System.Linq.Expressions;
 using Codevil.TemplateRepository.Entities;
 using Codevil.TemplateRepository.Factories;
-using System.Linq.Expressions;
+using Codevil.TemplateRepository.Handlers;
 
 namespace Codevil.TemplateRepository.Repositories
 {
@@ -22,44 +22,21 @@ namespace Codevil.TemplateRepository.Repositories
     /// <typeparam name="TEntity"></typeparam>
     public abstract class Repository<TRow, TEntity> : IRepository<TRow, TEntity>
         where TRow : class
-        where TEntity : DataEntity
+        where TEntity : class
     {
-        public IDataContextFactory DataContextFactory { get; set; }
-        public IEntityFactory EntityFactory { get; set; }
-        public IRowFactory RowFactory { get; set; }
-        public bool AutoRollbackOnError { get; set; }
-
         public Repository(IDataContextFactory dataContextFactory, IEntityFactory entityFactory, IRowFactory rowFactory)
             : this(dataContextFactory, entityFactory)
         {
-            this.RowFactory = rowFactory;
+            RowFactory = rowFactory;
         }
 
         public Repository(IDataContextFactory dataContextFactory, IEntityFactory entityFactory)
         {
-            this.DataContextFactory = dataContextFactory;
-            this.EntityFactory = entityFactory;
-            this.RowFactory = new RowFactory();
-            this.AutoRollbackOnError = true;
+            DataContextFactory = dataContextFactory;
+            EntityFactory = entityFactory;
+            RowFactory = new RowFactory();
+            AutoRollbackOnError = true;
         }
-
-        #region save
-        /// <summary>
-        /// <remarks>
-        /// This method must be overriden
-        /// </remarks>
-        /// <para>
-        /// This method should setup the data
-        /// from the entity to the row that is going to be inserted or updated
-        /// </para>
-        /// <para>
-        /// This method is called on the very beginning of every save (create/update)
-        /// operation
-        /// </para>
-        /// </summary>
-        /// <param name="row">The row that will be inserted</param>
-        /// <param name="entity">The entity that holds the information</param>
-        protected abstract void BeforeSave(TRow row, TEntity entity);
 
         /// <summary>
         /// <para>
@@ -72,22 +49,23 @@ namespace Codevil.TemplateRepository.Repositories
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
+                throw new ArgumentNullException(
+                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
             }
 
-            DataContext context = this.DataContextFactory.Create();
+            var context = DataContextFactory.Create();
 
             try
             {
-                TRow retrievedRow = this.FindEntity(entity, context);
+                var retrievedRow = FindEntity(entity, context);
 
                 if (retrievedRow != null)
                 {
-                    this.Update(retrievedRow, entity, context);
+                    Update(retrievedRow, entity, context);
                 }
                 else
                 {
-                    this.Create(entity, context);
+                    Create(entity, context);
                 }
             }
             finally
@@ -114,18 +92,19 @@ namespace Codevil.TemplateRepository.Repositories
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
+                throw new ArgumentNullException(
+                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
             }
 
-            DataContext context = transaction.DataContext;
+            var context = transaction.DataContext;
 
             try
             {
-                this.Save(entity, context);
+                Save(entity, context);
             }
             catch
             {
-                if (this.AutoRollbackOnError)
+                if (AutoRollbackOnError)
                 {
                     transaction.Rollback();
                 }
@@ -133,6 +112,23 @@ namespace Codevil.TemplateRepository.Repositories
                 throw;
             }
         }
+
+        /// <summary>
+        /// <remarks>
+        /// This method must be overriden
+        /// </remarks>
+        /// <para>
+        /// This method should setup the data
+        /// from the entity to the row that is going to be inserted or updated
+        /// </para>
+        /// <para>
+        /// This method is called on the very beginning of every save (create/update)
+        /// operation
+        /// </para>
+        /// </summary>
+        /// <param name="row">The row that will be inserted</param>
+        /// <param name="entity">The entity that holds the information</param>
+        protected abstract void BeforeSave(TRow row, TEntity entity);
 
         /// <summary>
         /// <para>
@@ -144,15 +140,15 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="context">The context in which the operation will take place</param>
         public virtual void Save(TEntity entity, DataContext context)
         {
-            TRow retrievedRow = this.FindEntity(entity, context);
+            var retrievedRow = FindEntity(entity, context);
 
             if (retrievedRow != null)
             {
-                this.Update(retrievedRow, entity, context);
+                Update(retrievedRow, entity, context);
             }
             else
             {
-                this.Create(entity, context);
+                Create(entity, context);
             }
         }
 
@@ -161,11 +157,8 @@ namespace Codevil.TemplateRepository.Repositories
         /// </summary>
         /// <param name="row">The row that was persisted</param>
         /// <param name="entity">The entity that was used as base for the save operation</param>
-        protected virtual void AfterSave(TRow row, TEntity entity)
-        {
-        }
+        protected virtual void AfterSave(TRow row, TEntity entity) {}
 
-        #region update
         /// <summary>
         /// This method is called at the beginning of the Update operation (after the BeforeSave method)
         /// </summary>
@@ -173,7 +166,7 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that will be used as base for the update operation</param>
         protected virtual void BeforeUpdate(TRow row, TEntity entity)
         {
-            this.BeforeSave(row, entity);
+            BeforeSave(row, entity);
         }
 
         /// <summary>
@@ -187,11 +180,9 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="context">The context in which the operation is going to take place</param>
         protected virtual void Update(TRow row, TEntity entity, DataContext context)
         {
-            this.BeforeUpdate(row, entity);
-
+            BeforeUpdate(row, entity);
             context.SubmitChanges();
-
-            this.AfterUpdate(row, entity);
+            AfterUpdate(row, entity);
         }
 
         /// <summary>
@@ -201,11 +192,9 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that was used as base for the update operation</param>
         protected virtual void AfterUpdate(TRow row, TEntity entity)
         {
-            this.AfterSave(row, entity);
+            AfterSave(row, entity);
         }
-        #endregion
 
-        #region create
         /// <summary>
         /// This method is called at the beginning of the Create operation (after the BeforeSave method)
         /// </summary>
@@ -213,7 +202,7 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that will be used as base for the create operation</param>
         protected virtual void BeforeCreate(TRow row, TEntity entity)
         {
-            this.BeforeSave(row, entity);
+            BeforeSave(row, entity);
         }
 
         /// <summary>
@@ -226,15 +215,15 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="context">The context in which the operation is going to take place</param>
         protected virtual void Create(TEntity entity, DataContext context)
         {
-            TRow row = (TRow)this.RowFactory.Create(typeof(TRow));
-            Table<TRow> table = (Table<TRow>)this.RowFactory.CreateTable(typeof(TRow), context);
+            var row = (TRow)RowFactory.Create(typeof (TRow));
+            var table = (Table<TRow>)RowFactory.CreateTable(typeof (TRow), context);
 
-            this.BeforeCreate(row, entity);
+            BeforeCreate(row, entity);
 
             table.InsertOnSubmit(row);
             context.SubmitChanges();
 
-            this.AfterCreate(row, entity);
+            AfterCreate(row, entity);
         }
 
         /// <summary>
@@ -244,78 +233,51 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that was used as base for the create operation</param>
         protected virtual void AfterCreate(TRow row, TEntity entity)
         {
-            this.AfterSave(row, entity);
+            AfterSave(row, entity);
         }
-        #endregion
-        #endregion
 
-        #region find
-        /// <summary>
-        /// <remarks>
-        /// This method must be overriden
-        /// </remarks>
-        /// <para>
-        /// This method should define the criteria of how a given entity
-        /// will be sought on the database so that the repository can
-        /// decide if it should update an existing entry or create a new one
-        /// when the method Save is called
-        /// </para>
-        /// </summary>
-        /// <param name="entity">The entity that will be sought</param>
-        /// <param name="context">The context in which the search is going to take place</param>
-        /// <returns></returns>
-        protected abstract TRow FindEntity(TEntity entity, DataContext context);
-
-        /// <summary>
-        /// This method finds a single entry of a given entity on the database
-        /// </summary>
-        /// <param name="exp">The expression to be evaluated</param>
-        /// <returns>
-        /// If more than one entry is found, an exception will be thrown. 
-        /// If no entries can be found, it will return null
-        /// </returns>
         public virtual TEntity FindSingle(Expression<Func<TRow, bool>> exp)
         {
-            DataContext context = this.DataContextFactory.Create();
-            TEntity entity = null;
-
-            try
+            using (var context = DataContextFactory.Create())
             {
-                TRow row = this.FindSingle(exp, context);
+                var row = FindSingle(exp, context);
 
-                if (row != null)
-                {
-                    entity = (TEntity)EntityFactory.Create(row);
-                }
-                else
-                {
-                    entity = null;
-                }
+                return row == null 
+                    ? null 
+                    : (TEntity)EntityFactory.Create(row);
             }
-            finally
-            {
-                context.Dispose();
-            }
-
-            return entity;
         }
 
-        /// <summary>
-        /// This method finds a list of entries of a given entity on the database
-        /// </summary>
-        /// <param name="exp">The expression to be evaluated</param>
-        /// <returns>
-        /// If no entries can be found, it will return an empty list
-        /// </returns>
+        public virtual TEntity FindSingle(Expression<Func<TRow, bool>> exp, Transaction transaction)
+        {
+            var context = transaction.DataContext;
+            var row = FindSingle(exp, context);
+
+            return row == null
+                   ? null
+                   : (TEntity)EntityFactory.Create(row);
+        }
+
+        public virtual IList<TEntity> Find(Expression<Func<TRow, bool>> exp, Transaction transaction)
+        {
+            var context = transaction.DataContext;
+
+            IList<TEntity> list = new List<TEntity>();
+
+            list = ToEntity(Find(exp, context));
+
+            return list;
+        }
+
         public virtual IList<TEntity> Find(Expression<Func<TRow, bool>> exp)
         {
-            DataContext context = (DataContext)this.DataContextFactory.Create();
+            var context = (DataContext)DataContextFactory.Create();
 
             IList<TEntity> list = new List<TEntity>();
 
             try
             {
-                list = this.ToEntity(this.Find(exp, context));
+                list = ToEntity(Find(exp, context));
             }
             finally
             {
@@ -325,64 +287,43 @@ namespace Codevil.TemplateRepository.Repositories
             return list;
         }
 
-        /// <summary>
-        /// This method finds a single entry of a given entity on the database
-        /// on a specific context
-        /// </summary>
-        /// <param name="exp">The expression to be evaluated</param>
-        /// <param name="context">The specific context in which the operation will take place</param>
-        /// <returns>
-        /// If more than one entry is found, an exception will be thrown. 
-        /// If no entries can be found, it will return null
-        /// </returns>
+        protected abstract TRow FindEntity(TEntity entity, DataContext context);
+
         protected virtual TRow FindSingle(Expression<Func<TRow, bool>> exp, DataContext context)
         {
-            IList<TRow> rows = this.Find(exp, context);
+            var rows = Find(exp, context);
 
             if (rows.Count > 1)
             {
                 throw new InvalidOperationException("Query matches more than one entry");
             }
-            else if (rows.Count == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return rows.Single();
-            }
+
+            return rows.Count == 0 
+                ? null 
+                : rows.Single();
         }
 
-        /// <summary>
-        /// This method finds a list of entries of a given entity on the database
-        /// on a specific context
-        /// </summary>
-        /// <param name="exp">The expression to be evaluated</param>
-        /// <param name="context">The specific context in which the operation will take place</param>
-        /// <returns>
-        /// If no entries can be found, it will return an empty list
-        /// </returns>
         protected virtual IList<TRow> Find(Expression<Func<TRow, bool>> exp, DataContext context)
         {
-            IQueryable<TRow> data = (from row in context.GetTable<TRow>() select row);
+            var data = (from row in context.GetTable<TRow>()
+                        select row);
 
             return data.Where(exp).ToList();
         }
-        #endregion
 
-        #region delete
         public virtual void Delete(TEntity entity)
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
+                throw new ArgumentNullException(
+                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
             }
 
-            DataContext context = this.DataContextFactory.Create();
+            var context = DataContextFactory.Create();
 
             try
             {
-                this.Delete(entity, context);
+                Delete(entity, context);
             }
             finally
             {
@@ -394,18 +335,19 @@ namespace Codevil.TemplateRepository.Repositories
         {
             if (entity == null)
             {
-                throw new ArgumentNullException("entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
+                throw new ArgumentNullException(
+                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
             }
 
-            DataContext context = transaction.DataContext;
+            var context = transaction.DataContext;
 
             try
             {
-                this.Delete(entity, context);
+                Delete(entity, context);
             }
             catch
             {
-                if (this.AutoRollbackOnError)
+                if (AutoRollbackOnError)
                 {
                     transaction.Rollback();
                 }
@@ -414,31 +356,31 @@ namespace Codevil.TemplateRepository.Repositories
             }
         }
 
-        public virtual void BeforeDelete(TRow row, TEntity entity)
-        {
-        }
+        public virtual void BeforeDelete(TRow row, TEntity entity) {}
 
         public virtual void Delete(TEntity entity, DataContext context)
         {
-            TRow row = this.FindEntity(entity, context);
+            var row = FindEntity(entity, context);
 
             if (row != null)
             {
-                Table<TRow> table = (Table<TRow>)this.RowFactory.CreateTable(typeof(TRow), context);
+                var table = (Table<TRow>)RowFactory.CreateTable(typeof (TRow), context);
 
-                this.BeforeDelete(row, entity);
+                BeforeDelete(row, entity);
 
                 table.DeleteOnSubmit(row);
                 context.SubmitChanges();
 
-                this.AfterDelete(row, entity);
+                AfterDelete(row, entity);
             }
         }
-                
-        public virtual void AfterDelete(TRow row, TEntity entity)
-        {
-        }
-        #endregion
+
+        public virtual void AfterDelete(TRow row, TEntity entity) {}
+
+        public IDataContextFactory DataContextFactory { get; set; }
+        public IEntityFactory EntityFactory { get; set; }
+        public IRowFactory RowFactory { get; set; }
+        public bool AutoRollbackOnError { get; set; }
 
         /// <summary>
         /// This method converts a list of database entries to its specific kind of entity
@@ -450,7 +392,7 @@ namespace Codevil.TemplateRepository.Repositories
         {
             IList<TEntity> entityList = new List<TEntity>();
 
-            foreach (TRow item in list)
+            foreach (var item in list)
             {
                 entityList.Add((TEntity)EntityFactory.Create(item));
             }

@@ -4,6 +4,6 @@ namespace Codevil.TemplateRepository.Factories
 {
     public interface IEntityFactory
     {
-        DataEntity Create(object row);
+        object Create(object row);
     }
 }

@@ -8,7 +8,7 @@ namespace Codevil.TemplateRepository.Model.Factories
 {
     public class EntityFactory : IEntityFactory
     {
-        public DataEntity Create(object row)
+        public object Create(object row)
         {
             Type rowType = row.GetType();
 

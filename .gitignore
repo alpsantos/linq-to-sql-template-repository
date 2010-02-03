@@ -11,3 +11,5 @@ TestResults/**
 *.log
 bin/
 obj/
+**/*.txt
+_Re*

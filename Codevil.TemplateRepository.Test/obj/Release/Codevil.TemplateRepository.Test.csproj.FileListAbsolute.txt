@@ -12,3 +12,17 @@ C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateReposi
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Test\obj\Release\ResolveAssemblyReference.cache
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Test\obj\Release\Codevil.TemplateRepository.Test.dll
 C:\Users\MACSkeptic\Documents\Visual Studio 2008\Projects\Codevil.TemplateRepository\Codevil.TemplateRepository.Test\obj\Release\Codevil.TemplateRepository.Test.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Test.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Test.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Data.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Migrations.exe
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Model.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\RikMigrations.exe
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Data.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Migrations.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\Codevil.TemplateRepository.Model.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\obj\Release\ResolveAssemblyReference.cache
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\obj\Release\Codevil.TemplateRepository.Test.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\obj\Release\Codevil.TemplateRepository.Test.pdb
