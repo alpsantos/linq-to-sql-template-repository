@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Data.Linq;
-using System.Reflection;
 
 namespace Codevil.TemplateRepository.Factories
 {
@@ -12,7 +11,7 @@ namespace Codevil.TemplateRepository.Factories
             object row = null;
 
             row = Activator.CreateInstance(rowType);
-            
+
             return row;
         }
 
@@ -20,16 +19,16 @@ namespace Codevil.TemplateRepository.Factories
         {
             object table = null;
 
-            Hashtable pluralInflections = this.MapPluralInflections();
+            var pluralInflections = MapPluralInflections();
 
-            string pluralizedName = rowType.Name + "s";
+            var pluralizedName = rowType.Name + "s";
 
             if (pluralInflections.ContainsKey(rowType.Name))
             {
                 pluralizedName = pluralInflections[rowType.Name].ToString();
             }
 
-            PropertyInfo property = context.GetType().GetProperty(pluralizedName);
+            var property = context.GetType().GetProperty(pluralizedName);
 
             if (property == null)
             {

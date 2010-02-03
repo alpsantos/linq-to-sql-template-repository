@@ -1,4 +1,6 @@
-﻿using Codevil.TemplateRepository.Model.Entities;
+﻿using Codevil.TemplateRepository.Factories;
+using Codevil.TemplateRepository.Model.Entities;
+using Codevil.TemplateRepository.Model.Mappings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Codevil.TemplateRepository.Test.Data;
 using Codevil.TemplateRepository.Model.Repositories;
@@ -8,6 +10,13 @@ namespace Codevil.TemplateRepository.Test.Model.Entities
     [TestClass]
     public class PeopleTest : DatabaseDependentTest
     {
+        [ClassInitialize]
+        public static void Initialize(TestContext ignore)
+        {
+            EntityMappings.AddMapping(new PersonMapping());
+            EntityMappings.AddMapping(new AccountMapping());
+        }
+
         [TestMethod]
         public void EqualsTest()
         {
@@ -81,10 +90,12 @@ namespace Codevil.TemplateRepository.Test.Model.Entities
 
             AccountsRepository accountsRepository = new AccountsRepository();
 
-            Assert.IsNotNull(accountsRepository.Find(a => a.PERSON.Id == owner.Id));
-            Assert.AreEqual(2, accountsRepository.Find(a => a.PERSON.Id == owner.Id).Count);
-            Assert.IsTrue(accountsRepository.Find(a => a.PERSON.Id == owner.Id).Contains(account1));
-            Assert.IsTrue(accountsRepository.Find(a => a.PERSON.Id == owner.Id).Contains(account2));
+            var accounts = accountsRepository.Find(a => a.PERSON.Id == owner.Id);
+
+            Assert.IsNotNull(accounts);
+            Assert.AreEqual(2, accounts.Count);
+            Assert.IsTrue(accounts.Contains(account1));
+            Assert.IsTrue(accounts.Contains(account2));
         }
     }
 }

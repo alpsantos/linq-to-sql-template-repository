@@ -4,9 +4,9 @@ using System.Data.Linq;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using Codevil.TemplateRepository.Entities;
 using Codevil.TemplateRepository.Factories;
 using Codevil.TemplateRepository.Handlers;
+using Codevil.TemplateRepository.Mappings;
 
 namespace Codevil.TemplateRepository.Repositories
 {
@@ -22,20 +22,22 @@ namespace Codevil.TemplateRepository.Repositories
     /// <typeparam name="TEntity"></typeparam>
     public abstract class Repository<TRow, TEntity> : IRepository<TRow, TEntity>
         where TRow : class
-        where TEntity : class
+        where TEntity : class, new()
     {
-        public Repository(IDataContextFactory dataContextFactory, IEntityFactory entityFactory, IRowFactory rowFactory)
-            : this(dataContextFactory, entityFactory)
+        private readonly IMapping<TRow, TEntity> _mapping;
+
+        public Repository(IDataContextFactory dataContextFactory, IRowFactory rowFactory)
+            : this(dataContextFactory)
         {
             RowFactory = rowFactory;
         }
 
-        public Repository(IDataContextFactory dataContextFactory, IEntityFactory entityFactory)
+        public Repository(IDataContextFactory dataContextFactory)
         {
             DataContextFactory = dataContextFactory;
-            EntityFactory = entityFactory;
             RowFactory = new RowFactory();
             AutoRollbackOnError = true;
+            _mapping = (IMapping<TRow, TEntity>)EntityMappings.GetMappingForEntity(typeof (TEntity));
         }
 
         /// <summary>
@@ -53,9 +55,7 @@ namespace Codevil.TemplateRepository.Repositories
                     "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
             }
 
-            var context = DataContextFactory.Create();
-
-            try
+            using (var context = DataContextFactory.Create())
             {
                 var retrievedRow = FindEntity(entity, context);
 
@@ -67,10 +67,6 @@ namespace Codevil.TemplateRepository.Repositories
                 {
                     Create(entity, context);
                 }
-            }
-            finally
-            {
-                context.Dispose();
             }
         }
 
@@ -112,6 +108,90 @@ namespace Codevil.TemplateRepository.Repositories
                 throw;
             }
         }
+
+        public virtual TEntity FindSingle(Expression<Func<TRow, bool>> exp)
+        {
+            using (var context = DataContextFactory.Create())
+            {
+                var row = FindSingle(exp, context);
+
+                return row == null
+                           ? null
+                           : _mapping.Create(row);
+            }
+        }
+
+        public virtual TEntity FindSingle(Expression<Func<TRow, bool>> exp, Transaction transaction)
+        {
+            var context = transaction.DataContext;
+            var row = FindSingle(exp, context);
+
+            return row == null
+                       ? null
+                       : _mapping.Create(row);
+        }
+
+        public virtual IList<TEntity> Find(Expression<Func<TRow, bool>> exp, Transaction transaction)
+        {
+            var context = transaction.DataContext;
+
+            IList<TEntity> list = new List<TEntity>();
+
+            list = ToEntity(Find(exp, context));
+
+            return list;
+        }
+
+        public virtual IList<TEntity> Find(Expression<Func<TRow, bool>> exp)
+        {
+            using (var context = DataContextFactory.Create())
+            {
+                return ToEntity(Find(exp, context));
+            }
+        }
+
+        public virtual void Delete(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(
+                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
+            }
+
+            using (var context = DataContextFactory.Create())
+            {
+                Delete(entity, context);
+            }
+        }
+
+        public virtual void Delete(TEntity entity, Transaction transaction)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(
+                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
+            }
+
+            var context = transaction.DataContext;
+
+            try
+            {
+                Delete(entity, context);
+            }
+            catch
+            {
+                if (AutoRollbackOnError)
+                {
+                    transaction.Rollback();
+                }
+
+                throw;
+            }
+        }
+
+        public IDataContextFactory DataContextFactory { get; set; }
+        public IRowFactory RowFactory { get; set; }
+        public bool AutoRollbackOnError { get; set; }
 
         /// <summary>
         /// <remarks>
@@ -215,7 +295,7 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="context">The context in which the operation is going to take place</param>
         protected virtual void Create(TEntity entity, DataContext context)
         {
-            var row = (TRow)RowFactory.Create(typeof (TRow));
+            var row = _mapping.Create(entity);
             var table = (Table<TRow>)RowFactory.CreateTable(typeof (TRow), context);
 
             BeforeCreate(row, entity);
@@ -236,57 +316,6 @@ namespace Codevil.TemplateRepository.Repositories
             AfterSave(row, entity);
         }
 
-        public virtual TEntity FindSingle(Expression<Func<TRow, bool>> exp)
-        {
-            using (var context = DataContextFactory.Create())
-            {
-                var row = FindSingle(exp, context);
-
-                return row == null 
-                    ? null 
-                    : (TEntity)EntityFactory.Create(row);
-            }
-        }
-
-        public virtual TEntity FindSingle(Expression<Func<TRow, bool>> exp, Transaction transaction)
-        {
-            var context = transaction.DataContext;
-            var row = FindSingle(exp, context);
-
-            return row == null
-                   ? null
-                   : (TEntity)EntityFactory.Create(row);
-        }
-
-        public virtual IList<TEntity> Find(Expression<Func<TRow, bool>> exp, Transaction transaction)
-        {
-            var context = transaction.DataContext;
-
-            IList<TEntity> list = new List<TEntity>();
-
-            list = ToEntity(Find(exp, context));
-
-            return list;
-        }
-
-        public virtual IList<TEntity> Find(Expression<Func<TRow, bool>> exp)
-        {
-            var context = (DataContext)DataContextFactory.Create();
-
-            IList<TEntity> list = new List<TEntity>();
-
-            try
-            {
-                list = ToEntity(Find(exp, context));
-            }
-            finally
-            {
-                context.Dispose();
-            }
-
-            return list;
-        }
-
         protected abstract TRow FindEntity(TEntity entity, DataContext context);
 
         protected virtual TRow FindSingle(Expression<Func<TRow, bool>> exp, DataContext context)
@@ -298,9 +327,9 @@ namespace Codevil.TemplateRepository.Repositories
                 throw new InvalidOperationException("Query matches more than one entry");
             }
 
-            return rows.Count == 0 
-                ? null 
-                : rows.Single();
+            return rows.Count == 0
+                       ? null
+                       : rows.Single();
         }
 
         protected virtual IList<TRow> Find(Expression<Func<TRow, bool>> exp, DataContext context)
@@ -309,51 +338,6 @@ namespace Codevil.TemplateRepository.Repositories
                         select row);
 
             return data.Where(exp).ToList();
-        }
-
-        public virtual void Delete(TEntity entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(
-                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
-            }
-
-            var context = DataContextFactory.Create();
-
-            try
-            {
-                Delete(entity, context);
-            }
-            finally
-            {
-                context.Dispose();
-            }
-        }
-
-        public virtual void Delete(TEntity entity, Transaction transaction)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(
-                    "entity", String.Format(CultureInfo.CurrentCulture, "Entity can't be null"));
-            }
-
-            var context = transaction.DataContext;
-
-            try
-            {
-                Delete(entity, context);
-            }
-            catch
-            {
-                if (AutoRollbackOnError)
-                {
-                    transaction.Rollback();
-                }
-
-                throw;
-            }
         }
 
         public virtual void BeforeDelete(TRow row, TEntity entity) {}
@@ -377,14 +361,9 @@ namespace Codevil.TemplateRepository.Repositories
 
         public virtual void AfterDelete(TRow row, TEntity entity) {}
 
-        public IDataContextFactory DataContextFactory { get; set; }
-        public IEntityFactory EntityFactory { get; set; }
-        public IRowFactory RowFactory { get; set; }
-        public bool AutoRollbackOnError { get; set; }
-
         /// <summary>
         /// This method converts a list of database entries to its specific kind of entity
-        /// using the EntityFactory configured for the repository
+        /// using the EntityMappings configured for the repository
         /// </summary>
         /// <param name="list">The list of rows to be converted</param>
         /// <returns>The corresponding list of entities</returns>
@@ -394,7 +373,7 @@ namespace Codevil.TemplateRepository.Repositories
 
             foreach (var item in list)
             {
-                entityList.Add((TEntity)EntityFactory.Create(item));
+                entityList.Add(_mapping.Create(item));
             }
 
             return entityList;

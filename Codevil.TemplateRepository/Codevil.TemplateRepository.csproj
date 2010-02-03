@@ -49,12 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\DataEntity.cs" />
+    <Compile Include="Factories\EntityMappings.cs" />
     <Compile Include="Handlers\Transaction.cs" />
     <Compile Include="Factories\DataContextFactory.cs" />
     <Compile Include="Factories\IDataContextFactory.cs" />
     <Compile Include="Factories\IEntityFactory.cs" />
     <Compile Include="Factories\IRowFactory.cs" />
     <Compile Include="Factories\RowFactory.cs" />
+    <Compile Include="Mappings\IMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />

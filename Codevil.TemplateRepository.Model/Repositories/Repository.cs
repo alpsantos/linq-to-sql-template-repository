@@ -7,10 +7,10 @@ namespace Codevil.TemplateRepository.Model.Repositories
 {
     public abstract class Repository<TRow, TEntity> : Template.Repository<TRow, TEntity>
         where TRow : class
-        where TEntity : DataEntity
+        where TEntity : DataEntity, new()
     {
         public Repository()
-            : base(new BankDataContextFactory(), new EntityFactory(), new RowFactory())
+            : base(new BankDataContextFactory(), new RowFactory())
         {
         }
     }

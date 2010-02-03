@@ -1,4 +1,6 @@
-﻿using Codevil.TemplateRepository.Model.Entities;
+﻿using Codevil.TemplateRepository.Factories;
+using Codevil.TemplateRepository.Model.Entities;
+using Codevil.TemplateRepository.Model.Mappings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Codevil.TemplateRepository.Test.Data;
 using Codevil.TemplateRepository.Model.Repositories;
@@ -8,6 +10,13 @@ namespace Codevil.TemplateRepository.Test.Model.Entities
     [TestClass]
     public class AccountsTest : DatabaseDependentTest
     {
+        [ClassInitialize]
+        public static void Initialize(TestContext ignore)
+        {
+            EntityMappings.AddMapping(new PersonMapping());
+            EntityMappings.AddMapping(new AccountMapping());
+        }
+
         [TestMethod]
         public void EqualsTest()
         {

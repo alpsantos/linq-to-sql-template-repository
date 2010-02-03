@@ -6,7 +6,7 @@ namespace Codevil.TemplateRepository.Test.Data
     public class DatabaseDependentTest
     {
         [TestInitialize]
-        public void Initialize()
+        public void Setup()
         {
             Migrator.Down();
             Migrator.Up();

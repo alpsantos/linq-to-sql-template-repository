@@ -16,12 +16,9 @@ namespace Codevil.TemplateRepository.Repositories
         where TRow : class
         where TEntity : class
     {
-        #region fields
         IDataContextFactory DataContextFactory { get; set; }
-        IEntityFactory EntityFactory { get; set; }
         IRowFactory RowFactory { get; set; }
         bool AutoRollbackOnError { get; set; }
-        #endregion
 
         /// <summary>
         /// This method finds a list of entries of a given entity on the database

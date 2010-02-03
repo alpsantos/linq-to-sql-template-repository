@@ -44,8 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\DoubleToDateTimeMapping.cs" />
+    <Compile Include="Factories\EntityFactoryTest.cs" />
     <Compile Include="Handlers\TransactionTest.cs" />
     <Compile Include="Data\DatabaseDependentTest.cs" />
+    <Compile Include="Mappings\DummyInt.cs" />
+    <Compile Include="Mappings\DummyString.cs" />
+    <Compile Include="Mappings\DummyIntToDummyStringMapping.cs" />
+    <Compile Include="Mappings\MappingTest.cs" />
     <Compile Include="Model\Entities\AccountsTest.cs" />
     <Compile Include="Model\Entities\PeopleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
