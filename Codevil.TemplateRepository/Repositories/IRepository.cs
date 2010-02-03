@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Codevil.TemplateRepository.Entities;
+using System.Linq.Expressions;
 using Codevil.TemplateRepository.Factories;
 using Codevil.TemplateRepository.Handlers;
-using System.Linq.Expressions;
 
 namespace Codevil.TemplateRepository.Repositories
 {
@@ -42,7 +41,6 @@ namespace Codevil.TemplateRepository.Repositories
         IList<TEntity> Find(Expression<Func<TRow, bool>> exp, Transaction transaction);
         TEntity FindSingle(Expression<Func<TRow, bool>> exp, Transaction transaction);
 
-        #region save
         /// <summary>
         /// <para>
         /// This method will persist (create or update) an entity on the database
@@ -67,9 +65,7 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that is going to be persisted</param>
         /// <param name="transaction">The transaction in which the operation will take place</param>
         void Save(TEntity entity, Transaction transaction);
-        #endregion
 
-        #region delete
         /// <summary>
         /// <para>
         /// This method will delete an entity from the database
@@ -93,6 +89,5 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that is going to be deleted</param>
         /// <param name="transaction">The transaction in which the operation will take place</param>
         void Delete(TEntity entity, Transaction transaction);
-        #endregion
     }
 }

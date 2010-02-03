@@ -208,7 +208,10 @@ namespace Codevil.TemplateRepository.Repositories
         /// </summary>
         /// <param name="row">The row that will be inserted</param>
         /// <param name="entity">The entity that holds the information</param>
-        protected abstract void BeforeSave(TRow row, TEntity entity);
+        protected virtual void BeforeSave(TRow row, TEntity entity)
+        {
+            _mapping.UpdateRow(row, entity);
+        }
 
         /// <summary>
         /// <para>
@@ -237,7 +240,10 @@ namespace Codevil.TemplateRepository.Repositories
         /// </summary>
         /// <param name="row">The row that was persisted</param>
         /// <param name="entity">The entity that was used as base for the save operation</param>
-        protected virtual void AfterSave(TRow row, TEntity entity) {}
+        protected virtual void AfterSave(TRow row, TEntity entity)
+        {
+            _mapping.UpdateEntity(entity, row);
+        }
 
         /// <summary>
         /// This method is called at the beginning of the Update operation (after the BeforeSave method)
