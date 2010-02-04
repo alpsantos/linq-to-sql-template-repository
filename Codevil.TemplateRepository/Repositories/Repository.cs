@@ -59,13 +59,13 @@ namespace Codevil.TemplateRepository.Repositories
             {
                 var retrievedRow = FindEntity(entity, context);
 
-                if (retrievedRow != null)
+                if (retrievedRow == null)
                 {
-                    Update(retrievedRow, entity, context);
+                    Create(entity, context);
                 }
                 else
                 {
-                    Create(entity, context);
+                    Update(retrievedRow, entity, context);
                 }
             }
         }
