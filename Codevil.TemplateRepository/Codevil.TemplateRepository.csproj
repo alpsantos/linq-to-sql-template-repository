@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Entities\DataEntity.cs" />
     <Compile Include="Factories\EntityMappings.cs" />
+    <Compile Include="Factories\MappingNotFoundException.cs" />
     <Compile Include="Handlers\Transaction.cs" />
     <Compile Include="Factories\DataContextFactory.cs" />
     <Compile Include="Factories\IDataContextFactory.cs" />

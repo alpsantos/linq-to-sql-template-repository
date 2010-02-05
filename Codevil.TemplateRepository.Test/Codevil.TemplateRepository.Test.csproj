@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Factories\DoubleToDateTimeMapping.cs" />
     <Compile Include="Factories\EntityFactoryTest.cs" />
+    <Compile Include="Factories\EntityMappingsTest.cs" />
     <Compile Include="Handlers\TransactionTest.cs" />
     <Compile Include="Data\DatabaseDependentTest.cs" />
     <Compile Include="Mappings\DummyInt.cs" />

@@ -6,8 +6,6 @@ namespace Codevil.TemplateRepository.Migrations
 {
     public class CreateTablePeople : IMigration
     {
-        #region IMigration Members
-
         public void Down(DbProvider db)
         {
             db.DropTable("PEOPLE");
@@ -22,7 +20,5 @@ namespace Codevil.TemplateRepository.Migrations
             users.AddColumn<string>("email", 50).NotUnicode();
             users.Save();
         }
-
-        #endregion
     }
 }

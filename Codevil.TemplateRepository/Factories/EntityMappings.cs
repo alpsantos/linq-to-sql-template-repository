@@ -6,22 +6,27 @@ namespace Codevil.TemplateRepository.Factories
 {
     public class EntityMappings
     {
-        private static IDictionary<Type, IMapping> EntityToRowMappingDictionary;
+        private static IDictionary<Type, IMapping> mappings;
 
         static EntityMappings()
         {
-            EntityToRowMappingDictionary = new Dictionary<Type, IMapping>();
+            mappings = new Dictionary<Type, IMapping>();
         }
 
         public static void AddMapping<TRow, TEntity>(IMapping<TRow, TEntity> mapping) 
             where TEntity : new()
         {
-            EntityToRowMappingDictionary[typeof(TEntity)] = mapping;
+            mappings[typeof(TEntity)] = mapping;
         }
 
         public static IMapping GetMappingForEntity(Type typeOfEntity)
         {
-            return EntityToRowMappingDictionary[typeOfEntity];
+            if (!mappings.ContainsKey(typeOfEntity))
+            {
+                throw new MappingNotFoundException(string.Format("Mapping for entity of type '{0}' not found.", typeOfEntity.FullName));
+            }
+
+            return mappings[typeOfEntity];
         }
     }
 }
