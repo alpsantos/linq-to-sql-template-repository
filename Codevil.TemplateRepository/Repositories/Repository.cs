@@ -24,20 +24,31 @@ namespace Codevil.TemplateRepository.Repositories
         where TRow : class
         where TEntity : class, new()
     {
-        private readonly IMapping<TRow, TEntity> _mapping;
+        private IMapping<TRow, TEntity> _mapping;
 
-        public Repository(IDataContextFactory dataContextFactory, IRowFactory rowFactory)
+        protected Repository(IDataContextFactory dataContextFactory, IRowFactory rowFactory)
             : this(dataContextFactory)
         {
             RowFactory = rowFactory;
         }
 
-        public Repository(IDataContextFactory dataContextFactory)
+        protected Repository(IDataContextFactory dataContextFactory)
         {
             DataContextFactory = dataContextFactory;
             RowFactory = new RowFactory();
             AutoRollbackOnError = true;
-            _mapping = (IMapping<TRow, TEntity>)EntityMappings.GetMappingForEntity(typeof (TEntity));
+        }
+
+        public IMapping<TRow, TEntity> Mapping
+        {
+            get
+            {
+                if (_mapping == null)
+                {
+                    _mapping = (IMapping<TRow, TEntity>)EntityMappings.GetMappingForEntity(typeof (TEntity));
+                }
+                return _mapping;
+            }
         }
 
         /// <summary>
@@ -117,7 +128,7 @@ namespace Codevil.TemplateRepository.Repositories
 
                 return row == null
                            ? null
-                           : _mapping.Create(row);
+                           : Mapping.Create(row);
             }
         }
 
@@ -128,7 +139,7 @@ namespace Codevil.TemplateRepository.Repositories
 
             return row == null
                        ? null
-                       : _mapping.Create(row);
+                       : Mapping.Create(row);
         }
 
         public virtual IList<TEntity> Find(Expression<Func<TRow, bool>> exp, Transaction transaction)
@@ -210,7 +221,7 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that holds the information</param>
         protected virtual void BeforeSave(TRow row, TEntity entity)
         {
-            _mapping.UpdateRow(row, entity);
+            Mapping.UpdateRow(row, entity);
         }
 
         /// <summary>
@@ -242,7 +253,7 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="entity">The entity that was used as base for the save operation</param>
         protected virtual void AfterSave(TRow row, TEntity entity)
         {
-            _mapping.UpdateEntity(entity, row);
+            Mapping.UpdateEntity(entity, row);
         }
 
         /// <summary>
@@ -301,7 +312,7 @@ namespace Codevil.TemplateRepository.Repositories
         /// <param name="context">The context in which the operation is going to take place</param>
         protected virtual void Create(TEntity entity, DataContext context)
         {
-            var row = _mapping.Create(entity);
+            var row = Mapping.Create(entity);
             var table = (Table<TRow>)RowFactory.CreateTable(typeof (TRow), context);
 
             BeforeCreate(row, entity);
@@ -379,7 +390,7 @@ namespace Codevil.TemplateRepository.Repositories
 
             foreach (var item in list)
             {
-                entityList.Add(_mapping.Create(item));
+                entityList.Add(Mapping.Create(item));
             }
 
             return entityList;
