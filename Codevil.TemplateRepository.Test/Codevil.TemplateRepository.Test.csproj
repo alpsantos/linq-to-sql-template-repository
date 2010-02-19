@@ -76,6 +76,10 @@
       <Project>{B38E4C6D-1BAE-4016-B331-3C43E61E8C2A}</Project>
       <Name>Codevil.TemplateRepository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ProjectFixture\ProjectFixture.csproj">
+      <Project>{1B93F882-8BC3-4D43-901C-A3DB7ACDE475}</Project>
+      <Name>ProjectFixture</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

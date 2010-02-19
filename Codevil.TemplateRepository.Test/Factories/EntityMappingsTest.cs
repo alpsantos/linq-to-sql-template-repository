@@ -1,7 +1,7 @@
 ﻿using System;
 using Codevil.TemplateRepository.Factories;
-using Codevil.TemplateRepository.Model.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ProjectFixture;
 
 namespace Codevil.TemplateRepository.Test.Factories
 {
@@ -13,6 +13,14 @@ namespace Codevil.TemplateRepository.Test.Factories
         public void ShouldThrowMappingNotFoundExceptionWhenMappingIsNotRegistered()
         {
             EntityMappings.GetMappingForEntity(typeof(String));
+        }
+
+        [TestMethod]
+        public void ShouldAddMappingsFromAGivenTypeAssembly()
+        {
+            EntityMappings.AddFromTypeAssembly<MappingFixture>();
+
+            EntityMappings.GetMappingForEntity<EntityFixture>();
         }
     }
 }

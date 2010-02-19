@@ -26,3 +26,5 @@ c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bi
 c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\obj\Release\ResolveAssemblyReference.cache
 c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\obj\Release\Codevil.TemplateRepository.Test.dll
 c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\obj\Release\Codevil.TemplateRepository.Test.pdb
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\ProjectFixture.dll
+c:\MACSkeptic\WorkspaceGIT\codevil-repository\Codevil.TemplateRepository.Test\bin\Release\ProjectFixture.pdb
