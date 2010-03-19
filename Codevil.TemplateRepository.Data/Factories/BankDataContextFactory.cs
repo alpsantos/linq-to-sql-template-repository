@@ -7,7 +7,7 @@ namespace Codevil.TemplateRepository.Data.Factories
     {
         public override DataContext Create()
         {
-            return new BankDataContext(@"Data Source=localhost;Initial Catalog=locaweb_fast_sal_test;Integrated Security=SSPI");
+            return new BankDataContext(@"Data Source=localhost;Initial Catalog=template_repository_tests;Integrated Security=SSPI");
         }
     }
 }
