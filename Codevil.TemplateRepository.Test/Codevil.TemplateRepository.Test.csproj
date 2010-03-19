@@ -52,6 +52,7 @@
     <Compile Include="Mappings\DummyInt.cs" />
     <Compile Include="Mappings\DummyString.cs" />
     <Compile Include="Mappings\DummyIntToDummyStringMapping.cs" />
+    <Compile Include="Mappings\DummyStringToDummyIntMapping.cs" />
     <Compile Include="Mappings\MappingTest.cs" />
     <Compile Include="Model\Entities\AccountsTest.cs" />
     <Compile Include="Model\Entities\PeopleTest.cs" />

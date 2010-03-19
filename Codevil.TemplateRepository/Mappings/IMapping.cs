@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Linq;
 
 namespace Codevil.TemplateRepository.Mappings
 {
     public interface IMapping
     {
+        string TableName { get; }
         object CreateRow(object entity);
         object CreateEntity(object row);
         void UpdateRow(object row, object entity);
@@ -22,6 +26,21 @@ namespace Codevil.TemplateRepository.Mappings
     public abstract class Mapping<TRow, TEntity> : IMapping<TRow, TEntity>
         where TEntity : new()
     {
+        public string TableName
+        {
+            get
+            {
+                var attributes = typeof (TRow).GetCustomAttributes(typeof(TableAttribute), false);
+                if (attributes.Length == 0)
+                {
+                    throw new InvalidRowTypeException(typeof(TRow));
+                }
+
+                var first = attributes.First() as TableAttribute;
+                return first.Name;
+            }
+        }
+
         public object CreateRow(object entity)
         {
             return Create((TEntity)entity);
