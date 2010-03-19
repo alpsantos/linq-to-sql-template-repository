@@ -1,4 +1,5 @@
-﻿using Codevil.TemplateRepository.Factories;
+﻿using System.Linq;
+using Codevil.TemplateRepository.Factories;
 using Codevil.TemplateRepository.Mappings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,5 +35,7 @@ namespace Codevil.TemplateRepository.Test.Mappings
         {
             var name = new DummyStringToDummyIntMapping().TableName;
         }
+
+        
     }
 }

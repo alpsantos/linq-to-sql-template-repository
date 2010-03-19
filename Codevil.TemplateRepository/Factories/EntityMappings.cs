@@ -44,5 +44,10 @@ namespace Codevil.TemplateRepository.Factories
                 Mappings[genericArguments[1]] = (IMapping)Activator.CreateInstance(mappingType);
             }
         }
+
+        public static IEnumerable<IMapping> GetAll()
+        {
+            return new List<IMapping>(Mappings.Values);
+        }
     }
 }

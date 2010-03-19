@@ -22,5 +22,6 @@ namespace Codevil.TemplateRepository.Test.Factories
 
             EntityMappings.GetMappingForEntity<EntityFixture>();
         }
+
     }
 }
