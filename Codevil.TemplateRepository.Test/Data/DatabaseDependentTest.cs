@@ -1,4 +1,6 @@
-﻿using Codevil.TemplateRepository.Migrations;
+﻿using Codevil.TemplateRepository.Factories;
+using Codevil.TemplateRepository.Migrations;
+using Codevil.TemplateRepository.Model.Mappings;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Codevil.TemplateRepository.Test.Data
@@ -8,6 +10,8 @@ namespace Codevil.TemplateRepository.Test.Data
         [TestInitialize]
         public void Setup()
         {
+            EntityMappings.AddMapping(new PersonMapping());
+            EntityMappings.AddMapping(new AccountMapping());
             Migrator.Down();
             Migrator.Up();
         }
